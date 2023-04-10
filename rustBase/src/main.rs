@@ -1,3 +1,5 @@
+use std::io;
+
 
 fn main() {
   shadowing();
@@ -67,6 +69,56 @@ fn dataStructor(){
     let value2 = 0b10101;           // 二进制
     let charVlaue = b'C';               //字节
 
-    println!("the value is :{int8},{uint8},{int16},{uint16},{int32},{uInt32},{int64},{uint64},{intN},{uIntN},{value10},{value16},{value8},{value2},{charVlaue}");
+    println!("the int values is :{int8},{uint8},{int16},{uint16},{int32},{uInt32},{int64},{uint64},{intN},{uIntN},{value10},{value16},{value8},{value2},{charVlaue}");
+
+    // 浮点类型 在指定小数的时候，如果没有指明类型，默认是双精度浮点数
+    let doubleVlaue = 0.4;
+    let floatValue: f32 = 0.6;
+
+    println!("the float value is {doubleVlaue},{floatValue}");
+
+    // 布尔类型
+    let boolValueT:bool = true;
+    let boolValueF = false;
+    println!("the default value of bool is {boolValueT},{boolValueF}");
+
+    // 字符类型 字符类型中的一个字符是在unioncode编码下的一个字符， 总共四个字节。
+    let c = 'z';
+    let z:char = 'z';
+    let emoji = '😀';
+
+    println!("the value of char is :{c},{z},{emoji}");
+
+    // 元组 元组中的内容类型可以不相同，元组的长度一旦确定下来之后就不能在变化了，如果要获取元组中的内容，可以使用映射的方式来实现。
+    let tup :(i32,f32,char) = (12,12.0,'c');
+    // 将元组解构为三个变量
+    let (x,y,z) = tup;
+    println!("the value of x is :{x}");
+    // 也可以直接寻秩访问
+    let one = tup.1;
+    println!("the vlaue of .1 is :{one}");
+
+    // 数组 变量名:[(类型/初始化值);长度] = [1,2,3,....]
+    let list:[i32;5] = [1,2,3,4,5];
+    // 数组的长度一旦确定之后就不能在修改，所以当确定使用元素数量不会发变化的时候再使用，否则建议使用向量。
+    // 如果是定义期间的数组越界会被编译器了拦截，但是如果在运行时期的数组越界会被抛出异常。
+    let firsetElem = list[0];
+    println!("the first value of list is :{firsetElem}");
+
+    let mut inputValue = String::new();
+
+    io::stdin()
+        .read_line(&mut inputValue)
+        .expect("input the wrong value");
+
+    let inputIndex:usize =  inputValue
+        .trim()
+        .parse()
+        .expect("input value is not a number");
+    
+    let sanncerIndexValue =  list[inputIndex];
+    println!("the value of input index is :{sanncerIndexValue}");
+
+
 
 }
