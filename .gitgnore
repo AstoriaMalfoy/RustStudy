@@ -1,3 +1,2 @@
 # 编译路径
-
-target/
+**/target/
