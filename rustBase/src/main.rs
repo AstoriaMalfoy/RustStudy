@@ -26,7 +26,7 @@ fn onwerShip(){
 fn onwerShipRemove(){
     let s1 = String::from("test String");
     let s2 = s1;
-    println!("the value of s1 is :{s1}");
+    println!("the value of s1 is :{s2}");
 }
 
 fn string_demo(){
