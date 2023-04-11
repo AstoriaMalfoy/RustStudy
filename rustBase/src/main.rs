@@ -15,9 +15,24 @@ fn main() {
 }
 // 所有权
 fn onwerShip(){
+    println!("***************************** the onwerShip part *****************************");
     // 所有权是一组规则，用来指导RUST语言的内存管理，在JAVA中，由虚拟机在运行时候按照引用来寻找垃圾空间，而在C语言中，内存的合理分配和销毁由开发者控制，
     // 在RUST中，内存是基于一套所所有权系统和编译规则来实现的，如果在编译的时候违反了任何的规则，在编译的时候都将无法通过。
-    
+    string_demo();
+    // onwerShipRemove
+    onwerShipRemove();
+}
+
+fn onwerShipRemove(){
+    let s1 = String::from("test String");
+    let s2 = s1;
+    println!("the value of s1 is :{s1}");
+}
+
+fn string_demo(){
+    let mut str = String::from("test string");
+    str.push_str(" append subStr");
+    println!("the value of str is :{str}");
 }
 
 // 流程控制
