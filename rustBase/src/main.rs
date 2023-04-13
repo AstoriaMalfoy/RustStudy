@@ -12,7 +12,45 @@ fn main() {
     control();
     // 所有权
     onwerShip();
+    // 引用
+    reference();
 }
+
+fn reference(){
+    // 在调用函数的时候，控制权会被转移，如果要想在函数结束依旧使用这个变量，就需要将参数值返回，实际上有更好的方案解决这个问题，就是使用引用。
+    param_reference();
+    // 可变引用
+    param_reference_with_change();
+}
+
+
+fn param_reference_with_change(){
+    let mut demo_str = String::from("test value");
+    let length = get_str_size_and_append(&mut demo_str,String::from(" test"));
+    println!("the value of string is :{demo_str} , length of str is :{length}")
+}
+
+// 可变参数引用
+fn get_str_size_and_append(str:&mut String,append_str:String) -> usize {
+    println!("the input str is :{str}");
+    let size = str.len();
+    str.push_str(&append_str);
+    size
+}
+
+// 参数引用
+fn param_reference(){
+    let demo_str = String::from("teset value");
+    let length = get_str_len(&demo_str);
+    // 引用的方法中是不能对参数进行修改的，如果对参数修改后导致编译报错 如果需要在函数中对参数进行修改 需要使用可变引用
+    println!("the value of demoStr is :{demo_str} the length of demoStr is :{length}");
+}
+
+fn get_str_len(str:&String) -> (usize){
+    str.len()
+}
+
+
 // 所有权
 fn onwerShip(){
     println!("***************************** the onwerShip part *****************************");
@@ -25,8 +63,23 @@ fn onwerShip(){
     clone();
     // stack not wonershipRemove
     stackOwnerShip();
-
+    // 调用函数过程中的所有权转移
     ownerRemoveOnFunction();
+    // 调用函数保留所有权，同时返回参数
+    return_value_with_owner_remove();
+}
+
+// 参数调用的时候保留变量所有权并且允许返回值，可以使用元祖的方式来获取返回值
+fn return_value_with_owner_remove(){
+    let demo_str = String::from("test string");
+    let (demo_str,return_value) = get_return_value_and_ovnership(demo_str);
+    println!("the vlaue of str is :{demo_str}, the value of return value is :{return_value}")
+}
+
+// 获取返回值的同时保留变量的所有权
+fn get_return_value_and_ovnership(p_str:String) -> (String,i32){
+    println!("the value of string is :{p_str}");
+    (p_str,23)
 }
 
 fn ownerRemoveOnFunction(){
@@ -41,6 +94,27 @@ fn ownerRemoveOnFunction(){
     printI32(number);
 
     println!("the value of number is :{number}");
+
+    let demoStr = give_ownerShip();
+
+    let demoStr2 = String::from("antoher test str");
+    
+    // 在调用一个函数的时候，会导致所有权转移，如果想要重新拿回所有权，需要将原来的值作为结果返回
+    let demoStr3 = get_and_back_ownerShip(demoStr2);
+
+}
+
+
+// 给出变量控制权
+fn give_ownerShip() -> String {
+    let str = String::from("this is test string");
+    str
+}
+
+// 获得并给出变量控制权
+fn get_and_back_ownerShip(str:String) -> String{
+    print!("the value of input String is :{str}");
+    return str
 }
 
 fn printI32(number:i32){
