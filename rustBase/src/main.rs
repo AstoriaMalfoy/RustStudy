@@ -21,11 +21,61 @@ fn onwerShip(){
     string_demo();
     // onwerShipRemove
     onwerShipRemove();
+    // clone 
+    clone();
+    // stack not wonershipRemove
+    stackOwnerShip();
+
+    ownerRemoveOnFunction();
 }
 
+fn ownerRemoveOnFunction(){
+    let str = String::from("this is test value");
+    
+    printString(str);
+
+    // 如果这个时候使用变量str会导致变异错误，因为调用函数时候，向形参赋值的逻辑和向引用赋值一样，会导致所有权转移
+
+    let number = 1;
+
+    printI32(number);
+
+    println!("the value of number is :{number}");
+}
+
+fn printI32(number:i32){
+    println!("the value of number is :{number}");
+}
+
+fn printString(str:String){
+    println!("the value of str is :{str}");
+}
+
+// 栈中元素没有所有权转移
+fn stackOwnerShip(){
+    // 下面的代码也可以正常的运行，似乎和之前的所说的所有权转移冲突，但是实际上是不冲突的，因为数字类型的是直接分配在堆栈中的，堆栈中的数据不涉及深拷贝和浅拷贝
+    // 所以RUST不会让numberA失效。
+    // 在RUST中还有一个Copy特性，使用了这个注解的数据类型会被分配在堆栈中，在赋值的时候，会进行简单的复制，而不是移动。所以复制不会导致原有对象失效。
+
+    let numberA = 1;
+    let numberB = numberA;
+    println!("the value of numberA is :{numberA} , the number of numberB is :{numberB}");
+}
+
+// clone 函数
+fn clone(){
+    let s1 = String::from("test string");
+    let s2 = s1.clone();
+    println!("the value of s1 is :{s1} , of s2 is : {s2}")
+}
+
+// 所有权转移
 fn onwerShipRemove(){
+    // 在RUST语言中，当一个变量的作用域结束之后，会自动调用该变量的drop函数，当两个引用指向同一个变量的时候，作用域结束的时候，两个引用都会调用drop函数，
+    // 这种称为双重释放错误，是严重的内存安全错误，所以当两个引用指向同一个变量的时候，RUST就会默认第一个变量已经失效，此刻，针对于该变量已经无法被使用
     let s1 = String::from("test String");
     let s2 = s1;
+    // 在RUST中，复制也只是浅复制，实际上在堆上的内存对象并没有发生修改。如果我们想要进行深拷贝，那么可以使用clone函数
     println!("the value of s1 is :{s2}");
 }
 
