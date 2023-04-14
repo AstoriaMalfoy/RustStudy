@@ -12,7 +12,45 @@ fn main() {
     control();
     // 所有权
     onwerShip();
+    // 引用
+    reference();
 }
+
+fn reference(){
+    // 在调用函数的时候，控制权会被转移，如果要想在函数结束依旧使用这个变量，就需要将参数值返回，实际上有更好的方案解决这个问题，就是使用引用。
+    param_reference();
+    // 可变引用
+    param_reference_with_change();
+}
+
+
+fn param_reference_with_change(){
+    let mut demo_str = String::from("test value");
+    let length = get_str_size_and_append(&mut demo_str,String::from(" test"));
+    println!("the value of string is :{demo_str} , length of str is :{length}")
+}
+
+// 可变参数引用
+fn get_str_size_and_append(str:&mut String,append_str:String) -> usize {
+    println!("the input str is :{str}");
+    let size = str.len();
+    str.push_str(&append_str);
+    size
+}
+
+// 参数引用
+fn param_reference(){
+    let demo_str = String::from("teset value");
+    let length = get_str_len(&demo_str);
+    // 引用的方法中是不能对参数进行修改的，如果对参数修改后导致编译报错 如果需要在函数中对参数进行修改 需要使用可变引用
+    println!("the value of demoStr is :{demo_str} the length of demoStr is :{length}");
+}
+
+fn get_str_len(str:&String) -> (usize){
+    str.len()
+}
+
+
 // 所有权
 fn onwerShip(){
     println!("***************************** the onwerShip part *****************************");
@@ -21,11 +59,97 @@ fn onwerShip(){
     string_demo();
     // onwerShipRemove
     onwerShipRemove();
+    // clone 
+    clone();
+    // stack not wonershipRemove
+    stackOwnerShip();
+    // 调用函数过程中的所有权转移
+    ownerRemoveOnFunction();
+    // 调用函数保留所有权，同时返回参数
+    return_value_with_owner_remove();
 }
 
+// 参数调用的时候保留变量所有权并且允许返回值，可以使用元祖的方式来获取返回值
+fn return_value_with_owner_remove(){
+    let demo_str = String::from("test string");
+    let (demo_str,return_value) = get_return_value_and_ovnership(demo_str);
+    println!("the vlaue of str is :{demo_str}, the value of return value is :{return_value}")
+}
+
+// 获取返回值的同时保留变量的所有权
+fn get_return_value_and_ovnership(p_str:String) -> (String,i32){
+    println!("the value of string is :{p_str}");
+    (p_str,23)
+}
+
+fn ownerRemoveOnFunction(){
+    let str = String::from("this is test value");
+    
+    printString(str);
+
+    // 如果这个时候使用变量str会导致变异错误，因为调用函数时候，向形参赋值的逻辑和向引用赋值一样，会导致所有权转移
+
+    let number = 1;
+
+    printI32(number);
+
+    println!("the value of number is :{number}");
+
+    let demoStr = give_ownerShip();
+
+    let demoStr2 = String::from("antoher test str");
+    
+    // 在调用一个函数的时候，会导致所有权转移，如果想要重新拿回所有权，需要将原来的值作为结果返回
+    let demoStr3 = get_and_back_ownerShip(demoStr2);
+
+}
+
+
+// 给出变量控制权
+fn give_ownerShip() -> String {
+    let str = String::from("this is test string");
+    str
+}
+
+// 获得并给出变量控制权
+fn get_and_back_ownerShip(str:String) -> String{
+    print!("the value of input String is :{str}");
+    return str
+}
+
+fn printI32(number:i32){
+    println!("the value of number is :{number}");
+}
+
+fn printString(str:String){
+    println!("the value of str is :{str}");
+}
+
+// 栈中元素没有所有权转移
+fn stackOwnerShip(){
+    // 下面的代码也可以正常的运行，似乎和之前的所说的所有权转移冲突，但是实际上是不冲突的，因为数字类型的是直接分配在堆栈中的，堆栈中的数据不涉及深拷贝和浅拷贝
+    // 所以RUST不会让numberA失效。
+    // 在RUST中还有一个Copy特性，使用了这个注解的数据类型会被分配在堆栈中，在赋值的时候，会进行简单的复制，而不是移动。所以复制不会导致原有对象失效。
+
+    let numberA = 1;
+    let numberB = numberA;
+    println!("the value of numberA is :{numberA} , the number of numberB is :{numberB}");
+}
+
+// clone 函数
+fn clone(){
+    let s1 = String::from("test string");
+    let s2 = s1.clone();
+    println!("the value of s1 is :{s1} , of s2 is : {s2}")
+}
+
+// 所有权转移
 fn onwerShipRemove(){
+    // 在RUST语言中，当一个变量的作用域结束之后，会自动调用该变量的drop函数，当两个引用指向同一个变量的时候，作用域结束的时候，两个引用都会调用drop函数，
+    // 这种称为双重释放错误，是严重的内存安全错误，所以当两个引用指向同一个变量的时候，RUST就会默认第一个变量已经失效，此刻，针对于该变量已经无法被使用
     let s1 = String::from("test String");
     let s2 = s1;
+    // 在RUST中，复制也只是浅复制，实际上在堆上的内存对象并没有发生修改。如果我们想要进行深拷贝，那么可以使用clone函数
     println!("the value of s1 is :{s2}");
 }
 
