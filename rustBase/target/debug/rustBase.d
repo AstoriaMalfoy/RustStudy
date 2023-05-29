@@ -1,1 +1,1 @@
-D:\Develop\prvProject\RustStudy\RustStudy\rustBase\target\debug\rustBase.exe: D:\Develop\prvProject\RustStudy\RustStudy\rustBase\src\main.rs
+D:\Develop\prvProject\RustStudy\rustBase\target\debug\rustBase.exe: D:\Develop\prvProject\RustStudy\rustBase\src\main.rs
