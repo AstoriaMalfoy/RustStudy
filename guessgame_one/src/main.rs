@@ -11,7 +11,7 @@ fn main() {
     loop {
         println!("generate number is:{}",rng_number);
         // 生成一个字符串
-        let mut input_value = String::new();
+        let mut input_value: String = String::new();
         
         io::stdin().read_line(&mut input_value).expect("input method return error");
 
